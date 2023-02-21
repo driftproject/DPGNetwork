@@ -5,7 +5,7 @@ class RegUser(BaseModel):
     username: str
     email: EmailStr
     password: str
-
+    secret_key: str
 
 class AuthUser(BaseModel):
      username: str
