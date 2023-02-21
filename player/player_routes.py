@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from player.validation.player import RegUser, AuthUser
-from player.db.player import register_user, login_user, get_current_user_with_jwt, login_user_with_jwt
+from player.db.player import register_user, login_user, get_current_user_with_jwt
 from fastapi.responses import FileResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
@@ -8,7 +8,7 @@ _player_routing = APIRouter(
     prefix="/player"
 )
 
-oauth2 = OAuth2PasswordBearer(tokenUrl="/player/token")
+oauth2 = OAuth2PasswordBearer(tokenUrl="/player/login")
 
 @_player_routing.post("/registration")
 async def _registration_user_(userdata: RegUser):
@@ -21,12 +21,8 @@ async def return_profile_pic(image: str):
 
 
 @_player_routing.post("/login")
-async def _login_user_(userdata: AuthUser):
+async def _token_getter_(userdata: OAuth2PasswordRequestForm = Depends()):
     return login_user(userdata)
-
-@_player_routing.post("/token")
-async def _token_getter_(userdata: OAuth2PasswordRequestForm = Depends(), response_model=None):
-    return login_user_with_jwt(userdata)
 
 @_player_routing.get("/me")
 async def get_player_profile(token: str = Depends(oauth2)):
