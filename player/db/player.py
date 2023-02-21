@@ -27,12 +27,14 @@ def register_user(userdata: RegUser):
         "id": player.id,
         "username": player.username,
         "profile_pic": player.profile_pic_path,
-        "token": create_token(
-            {
-                "id": player.id,
-                "username": player.username
-            }
-        )
+        "token": {
+            "access_token": create_token(
+                {
+                    "id": player.id,
+                    "username": player.username
+                }),
+                "token_type": "bearer"
+        }
     }
     return return_data
 
@@ -42,28 +44,32 @@ def login_user(userdata: AuthUser):
     player = player.scalar_one_or_none()
     if player:
         if PasswordHash.verify_password(userdata.password, player.hashed_password):
-            return {
-                "id": player.id,
-                "username": player.username,
-                "profile_pic": player.profile_pic_path,
-                "token": create_token(
-                    {
-                        "id": player.id,
-                        "username": player.username
-                    }
-                )
-            }
-        elif PasswordHash.verify_password(userdata.password, player.secret_key):
-            return {
-                "id": player.id,
-                "username": player.username,
-                "profile_pic": player.profile_pic_path,
-                "token": create_token(
+            return  {
+        "id": player.id,
+        "username": player.username,
+        "profile_pic": player.profile_pic_path,
+        "token": {
+            "access_token": create_token(
                 {
                     "id": player.id,
                     "username": player.username
-                }
-                )
+                }),
+                "token_type": "bearer"
+        }
+        }
+        elif PasswordHash.verify_password(userdata.password, player.secret_key):
+            return  {
+        "id": player.id,
+        "username": player.username,
+        "profile_pic": player.profile_pic_path,
+        "token": {
+            "access_token": create_token(
+                {
+                    "id": player.id,
+                    "username": player.username
+                }),
+                "token_type": "bearer"
+        }
         }
         else:
             return Response("Incorrect password", 401)
