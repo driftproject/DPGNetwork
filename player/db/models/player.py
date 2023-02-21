@@ -7,3 +7,4 @@ class Player(SQLModel, table=True):
     email: str
     hashed_password: str
     profile_pic_path: str
+    secret_key: str
