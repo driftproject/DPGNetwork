@@ -5,7 +5,7 @@ from fastapi import HTTPException
 
 def create_token(data: dict):
     to_encode = data.copy()
-    exp = datetime.now() + timedelta(minutes=120)
+    exp = datetime.now() + timedelta(days=7)
     to_encode.update({'exp': exp})
     encoded_jwt = jwt.encode(to_encode, "secretkey", algorithm="HS256")
     return encoded_jwt
