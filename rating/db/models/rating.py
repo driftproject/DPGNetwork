@@ -8,4 +8,5 @@ class Rating(SQLModel, table=True):
     user_id: int = Field(foreign_key='player.id')
     points: int
     time: int
+    speed: int
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
