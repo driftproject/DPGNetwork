@@ -75,3 +75,13 @@ def get_current_user_with_jwt(token):
         }
     else:
         return "This token incorrect"
+
+
+def get_player_data_with_id(id):
+    profile = session.exec(select(Player).where(Player.id == id)).first()
+    return {
+        "email": profile.email,
+        "profile_pic_path": profile.profile_pic_path,
+        "username": profile.username,
+        "id": profile.id,
+    }
