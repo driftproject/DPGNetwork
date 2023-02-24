@@ -85,3 +85,12 @@ def get_player_data_with_id(id):
         "username": profile.username,
         "id": profile.id,
     }
+
+def get_player_data_with_username(username):
+    profile = session.exec(select(Player).where(Player.username == username)).first()
+    return {
+        "email": profile.email,
+        "profile_pic_path": profile.profile_pic_path,
+        "username": profile.username,
+        "id": profile.id,
+    }
