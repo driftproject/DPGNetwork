@@ -23,6 +23,8 @@ def create_result(rating: RatingSend, user_id):
 
 def get_rating_by_userid(user_id):
     _rating = session.exec(select(Rating).where(Rating.user_id == user_id)).all()
+    for i in range(len(_rating)):
+        _rating[i] = dict(_rating[i])
     return _rating
 
 def get_all_rating_data():
